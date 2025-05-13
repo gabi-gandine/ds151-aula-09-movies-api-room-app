@@ -33,6 +33,7 @@ import com.example.moviesapp.model.Movie
 import com.example.moviesapp.model.fourMovies
 import com.example.moviesapp.ui.moviesapp.MovieDetailsScreen
 import com.example.moviesapp.ui.moviesapp.MoviesScreen
+import com.example.moviesapp.ui.moviesapp.FavoriteMoviesScreen
 import com.example.moviesapp.ui.theme.MoviesAppTheme
 
 sealed class BottomNavScreen(val route: String, val label: String, val icon: ImageVector) {
@@ -107,7 +108,11 @@ fun MoviesApp() {
                 )
             }
             composable(BottomNavScreen.Favorites.route) {
-                FavoriteMoviesScreen()
+                FavoriteMoviesScreen(
+                    onGoToMovieDetailsClick = { movieId ->
+                        navController.navigate("movie_list/$movieId")
+                    }
+                )
             }
             composable(
                 route="movie_list/{movieId}",
@@ -130,17 +135,6 @@ fun MoviesApp() {
                 }
             }
         }
-    }
-}
-
-@Composable
-fun FavoriteMoviesScreen(
-    movies: List<Movie> = fourMovies,
-) {
-    Column {
-        Text("Filmes Favoritos", style = MaterialTheme.typography.displayMedium)
-        if (movies.isEmpty()) Text("Nenhum favorito.")
-        movies.forEach { movie -> Text(movie.title) }
     }
 }
 

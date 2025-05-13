@@ -20,25 +20,23 @@ import com.example.moviesapp.ui.theme.MoviesAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MoviesScreen(
-    moviesListViewModel: MoviesListViewModel = viewModel (),
+fun FavoriteMoviesScreen(
+    favoriteMoviesViewModel: FavoriteMoviestViewModel = viewModel(),
     onGoToMovieDetailsClick: (movieId:Int) -> Unit = {},
 ) {
-    val moviesScreenUiState = moviesListViewModel.moviesScreenUiState
+    val favoriteMoviesScreenUiState = favoriteMoviesViewModel.favoriteMoviesScreenUiState
 
-
-    Column(){
-        when(moviesScreenUiState) {
-            is MoviesScreenUiState.Success -> {
-                MoviesList(
-                    movies = moviesScreenUiState.movies,
-                    favorites = moviesScreenUiState.favorites,
-                    onFavoriteClick = { movieId -> moviesListViewModel.toggleFavorite(movieId) },
-                    onMovieClick = { movieId -> onGoToMovieDetailsClick(movieId) },
+    Column() {
+        when(favoriteMoviesScreenUiState) {
+            is FavoriteMoviesScreenUiState.Success -> {
+                FavoriteMoviesList(
+                    favorites = favoriteMoviesScreenUiState.favorites,
+                    onFavoriteClick = { movieId -> favoriteMoviesViewModel.toggleFavorite(movieId) },
+                    onMovieClick = { movieId -> onGoToMovieDetailsClick(movieId) }
                 )
             }
-            is MoviesScreenUiState.Loading -> LoadingScreen(modifier = Modifier.fillMaxSize())
-            is MoviesScreenUiState.Error -> ErrorScreen(modifier = Modifier.fillMaxSize())
+            is FavoriteMoviesScreenUiState.Loading -> LoadingScreen(modifier = Modifier.fillMaxSize())
+            is FavoriteMoviesScreenUiState.Error -> ErrorScreen( modifier = Modifier.fillMaxSize())
         }
     }
 }
